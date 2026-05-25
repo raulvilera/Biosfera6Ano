@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade de Ciências - E.E. Profª Lydia Kitz Moreira</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0f766e;
+            --accent-color: #dc2626;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --card-gradient-start: #e0f2fe;
+            --card-gradient-end: #064e3b;
+            --radio-checked-dark: #064e3b;
+            --radio-checked-light: #fbbf24;
+            --button-gradient-start: #1e3a8a;
+            --button-gradient-end: #000000;
+            --header-gradient-start: #e0f2fe;
+            --header-gradient-end: #064e3b;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--text-dark); background-color: var(--bg-light); line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #fbbf24; margin-bottom: 30px; background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end)); padding: 20px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .school-name { font-size: 18px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); max-width: 300px; }
+        .header-info { display: flex; gap: 30px; font-size: 14px; }
+        .header-field { display: flex; flex-direction: column; }
+        .header-field label { font-weight: 600; color: #fffaec; text-shadow: 0 1px 1px rgba(0,0,0,0.2); margin-bottom: 4px; }
+        .header-field input { border: none; border-bottom: 2px solid rgba(255,255,255,0.7); background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 8px; font-size: 14px; width: 150px; color: white; font-weight: 500; }
+        .header-field input::placeholder { color: rgba(255,255,240,0.8); }
+        .selection-section { background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end)); padding: 25px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-left: 4px solid #fbbf24; }
+        .selection-title { font-size: 16px; font-weight: 700; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .selection-title::before { content: "👤"; font-size: 20px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
+        .selection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .selection-group { display: flex; flex-direction: column; }
+        .selection-group label { font-weight: 600; color: #fffaec; text-shadow: 0 1px 1px rgba(0,0,0,0.3); margin-bottom: 8px; font-size: 14px; }
+        .selection-group select { padding: 10px 12px; border: 2px solid rgba(255,255,200,0.6); border-radius: 12px; font-size: 14px; cursor: pointer; background-color: rgba(255,255,255,0.9); transition: all 0.3s ease; font-weight: 500; }
+        .selection-group select option:nth-child(odd) { background-color: #e0f2fe; color: #064e3b; }
+        .selection-group select option:nth-child(even) { background-color: #ffffff; color: #1f2937; }
+        .selection-group select:hover { border-color: #fbbf24; transform: scale(1.01); }
+        .selection-group select:focus { outline: none; border-color: #fde047; box-shadow: 0 0 0 3px rgba(253,224,71,0.3); }
+        .questions-container { background-color: var(--bg-white); padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary-color); margin: 30px 0 20px 0; padding-bottom: 10px; border-bottom: 2px solid var(--secondary-color); }
+        .section-title:first-child { margin-top: 0; }
+        .question { margin-bottom: 35px; page-break-inside: avoid; background: linear-gradient(135deg, var(--card-gradient-start), var(--card-gradient-end)); border-radius: 16px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .question:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .question::after { content: ''; position: relative; display: block; bottom: -10px; left: 0; width: 100%; height: 20px; background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.3), transparent); border-radius: 50%; filter: blur(8px); opacity: 0.6; pointer-events: none; margin-top: 15px; }
+        .question-header, .question-text, .question-image, .alternatives, .essay-response, .response-label, .response-lines { position: relative; z-index: 2; }
+        .question-header { display: flex; gap: 15px; margin-bottom: 15px; }
+        .question-number { min-width: 35px; height: 35px; background-color: rgba(255,255,255,0.9); color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .question-text { flex: 1; font-size: 15px; line-height: 1.6; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); font-weight: 500; }
+        .question-text strong { color: #fffaec; }
+        .question-image { margin: 20px 0; text-align: center; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 10px; }
+        .question-image svg, .question-image img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); }
+        .alternatives { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .alternative { display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: rgba(255,255,255,0.85); border-radius: 10px; border: 2px solid rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s ease; }
+        .alternative:hover { background: rgba(255,255,255,0.95); transform: scale(1.01); }
+        .alternative input[type="radio"] { margin-top: 3px; cursor: pointer; accent-color: var(--secondary-color); width: 18px; height: 18px; }
+        .alternative label { cursor: pointer; flex: 1; font-size: 14px; color: var(--text-dark); font-weight: 500; }
+        .alternative:has(input[type="radio"]:checked) { background: linear-gradient(120deg, var(--radio-checked-dark), var(--radio-checked-light)); border: 2px solid #fde047; box-shadow: 0 0 12px 3px rgba(253,224,71,0.7), inset 0 1px 2px rgba(255,255,255,0.3); animation: pulseGlow 0.3s ease-out; }
+        .alternative:has(input[type="radio"]:checked) label { color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.4); font-weight: bold; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(253,224,71,0); border-color: #fde047; } 50% { box-shadow: 0 0 20px 5px rgba(253,224,71,0.8); } 100% { box-shadow: 0 0 12px 3px rgba(253,224,71,0.6); } }
+        .essay-response { margin-top: 20px; }
+        .response-label { display: block; font-size: 13px; font-weight: 600; color: #fffaec; margin-bottom: 10px; text-shadow: 0 1px 1px rgba(0,0,0,0.3); }
+
+        /* ── TEXTAREA para dissertativas (substituem as linhas estáticas) ── */
+        .essay-textarea {
+            width: 100%;
+            min-height: 110px;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            resize: vertical;
+            line-height: 1.6;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .essay-textarea::placeholder { color: rgba(255,255,240,0.6); }
+        .essay-textarea:focus { outline: none; background: rgba(255,255,255,0.22); border-color: #fde047; box-shadow: 0 0 0 3px rgba(253,224,71,0.25); }
+
+        .buttons-container { display: flex; gap: 20px; justify-content: center; margin: 40px 0 20px; }
+        .action-button { padding: 14px 32px; font-size: 18px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s ease; color: white; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(145deg, var(--button-gradient-start), var(--button-gradient-end)); box-shadow: 0 5px 0 #0a0a0a; }
+        .action-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #0a0a0a; }
+        .action-button:hover { filter: brightness(1.05); transform: translateY(-1px); box-shadow: 0 6px 0 #0a0a0a; }
+        .action-button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+        /* ── MODAL de feedback ── */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 9999; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #fff; border-radius: 20px; padding: 36px 32px; max-width: 480px; width: 90%; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.35); animation: popIn 0.25s ease; }
+        @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-icon { font-size: 52px; margin-bottom: 14px; }
+        .modal-title { font-size: 20px; font-weight: 700; color: var(--primary-color); margin-bottom: 10px; }
+        .modal-msg { font-size: 15px; color: var(--text-dark); line-height: 1.6; margin-bottom: 22px; }
+        .modal-btn { padding: 11px 32px; border: none; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; background: linear-gradient(145deg, var(--primary-color), #000); color: #fff; box-shadow: 0 4px 0 #000; transition: all 0.15s ease; }
+        .modal-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
+
+        /* ── GABARITO (correção visual) ── */
+        .alternative.correct-ans   { background: linear-gradient(120deg,#166534,#22c55e)!important; border-color: #16a34a!important; }
+        .alternative.wrong-ans     { background: linear-gradient(120deg,#7f1d1d,#ef4444)!important; border-color: #dc2626!important; }
+        .alternative.correct-ans label,
+        .alternative.wrong-ans label { color: #fff!important; text-shadow: 0 1px 2px rgba(0,0,0,0.4)!important; font-weight: bold!important; }
+
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--border-color); text-align: center; font-size: 12px; color: var(--text-light); }
+        .table-container { overflow-x: auto; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; background: rgba(255,255,255,0.9); border-radius: 8px; overflow: hidden; }
+        th, td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
+        th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        tr:nth-child(even) { background-color: var(--bg-light); }
+        .question-image .table-container { background: rgba(255,255,240,0.95); border-radius: 12px; padding: 5px; }
+
+        @media print {
+            body { background-color: white; }
+            .container { max-width: 100%; padding: 0; }
+            .header { page-break-after: avoid; background: #e0f2fe; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .selection-section { background: #e0f2fe; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question { page-break-inside: avoid; background: #f0f9ff; box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question::after { display: none; }
+            .section-title { page-break-after: avoid; }
+            .action-button, .buttons-container, .modal-overlay { display: none!important; }
+            @page { margin: 1cm; size: A4; }
+        }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 15px; }
+            .header-info { flex-direction: column; gap: 15px; }
+            .selection-grid { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+            .questions-container { padding: 20px; }
+            .buttons-container { flex-direction: column; align-items: center; }
+            .action-button { width: 80%; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="school-name">E.E. Profª Lydia Kitz Moreira</div>
+        <div class="header-info">
+            <div class="header-field">
+                <label>Data:</label>
+                <input type="date" id="dataField">
+            </div>
+            <div class="header-field">
+                <label>Turma:</label>
+                <input type="text" id="turmaField" readonly>
+            </div>
+            <div class="header-field">
+                <label>Aluno(a):</label>
+                <input type="text" id="alunoField" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- IDENTIFICAÇÃO -->
+    <div class="selection-section">
+        <div class="selection-title">Identificação do Aluno</div>
+        <div class="selection-grid">
+            <div class="selection-group">
+                <label for="turmaSelect">Selecione sua Turma:</label>
+                <select id="turmaSelect" onchange="atualizarTurma()">
+                    <option value="">-- Escolha uma turma --</option>
+                    <option value="6A">6º Ano A</option>
+                    <option value="6B">6º Ano B</option>
+                    <option value="6C">6º Ano C</option>
+                </select>
+            </div>
+            <div class="selection-group">
+                <label for="alunoSelect">Selecione seu Nome:</label>
+                <select id="alunoSelect" onchange="atualizarAluno()">
+                    <option value="">-- Escolha seu nome --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTÕES -->
+    <div class="questions-container">
+        <h2 class="section-title">Questões de Múltipla Escolha</h2>
+
+        <!-- Q1 -->
+        <div class="question">
+            <div class="question-header">
+                <div class="question-number">1</div>
+                <div class="question-text"><strong>Biosfera e Ciclo Hidrológico</strong><br>De acordo com o relatório da Organização Meteorológica Mundial (OMM) de 2025, o desequilíbrio energético da Terra atingiu seu maior nível desde 1960, intensificando o ciclo hidrológico. Qual das alternativas melhor explica como o aquecimento global afeta a Hidrosfera e a Biosfera?</div>
+            </div>
+            <div class="question-image">
+                <svg viewBox="0 0 600 400" width="500" height="333" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#87CEEB"/><stop offset="100%" stop-color="#E0F6FF"/></linearGradient><linearGradient id="oceanGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1E90FF"/><stop offset="100%" stop-color="#000080"/></linearGradient></defs><rect width="600" height="200" fill="url(#skyGrad)"/><circle cx="500" cy="50" r="40" fill="#FFD700"/><line x1="150" y1="250" x2="150" y2="150" stroke="#FF6B6B" stroke-width="3"/><line x1="250" y1="250" x2="250" y2="120" stroke="#FF6B6B" stroke-width="3"/><line x1="350" y1="250" x2="350" y2="140" stroke="#FF6B6B" stroke-width="3"/><ellipse cx="120" cy="80" rx="40" ry="30" fill="#FFFFFF" opacity="0.9"/><ellipse cx="160" cy="90" rx="35" ry="25" fill="#FFFFFF" opacity="0.9"/><ellipse cx="280" cy="60" rx="45" ry="35" fill="#FFFFFF" opacity="0.9"/><line x1="100" y1="130" x2="90" y2="160" stroke="#4A90E2" stroke-width="2"/><line x1="120" y1="130" x2="110" y2="160" stroke="#4A90E2" stroke-width="2"/><line x1="140" y1="130" x2="130" y2="160" stroke="#4A90E2" stroke-width="2"/><line x1="260" y1="110" x2="250" y2="140" stroke="#4A90E2" stroke-width="2"/><line x1="280" y1="110" x2="270" y2="140" stroke="#4A90E2" stroke-width="2"/><line x1="300" y1="110" x2="290" y2="140" stroke="#4A90E2" stroke-width="2"/><rect y="200" width="600" height="200" fill="url(#oceanGrad)"/><polygon points="0,200 100,180 200,190 300,170 400,185 500,175 600,200 600,400 0,400" fill="#90EE90"/><rect x="120" y="160" width="8" height="40" fill="#8B4513"/><polygon points="124,160 100,140 148,140" fill="#228B22"/><rect x="280" y="155" width="8" height="45" fill="#8B4513"/><polygon points="284,155 255,130 313,130" fill="#228B22"/><line x1="150" y1="250" x2="150" y2="320" stroke="#4A90E2" stroke-width="2" stroke-dasharray="5,5"/><line x1="350" y1="250" x2="350" y2="320" stroke="#4A90E2" stroke-width="2" stroke-dasharray="5,5"/><text x="10" y="30" font-size="14" font-weight="bold" fill="#333">Ciclo da Água</text><text x="160" y="110" font-size="11" fill="#333">Evaporação</text><text x="250" y="50" font-size="11" fill="#333">Condensação</text><text x="90" y="180" font-size="11" fill="#333">Precipitação</text><text x="140" y="290" font-size="11" fill="#333">Infiltração</text></svg>
+            </div>
+            <div class="alternatives">
+                <div class="alternative"><input type="radio" name="q1" value="A" id="q1a"><label for="q1a"><strong>A)</strong> O aquecimento aumenta a evaporação, intensificando o ciclo hidrológico e causando secas prolongadas, reduzindo a biodiversidade aquática e terrestre.</label></div>
+                <div class="alternative"><input type="radio" name="q1" value="B" id="q1b"><label for="q1b"><strong>B)</strong> O aumento da temperatura dos oceanos reduz a evaporação, diminuindo a precipitação e afetando negativamente os ecossistemas dependentes de água doce.</label></div>
+                <div class="alternative"><input type="radio" name="q1" value="C" id="q1c"><label for="q1c"><strong>C)</strong> O aquecimento global não afeta significativamente o ciclo hidrológico, pois a quantidade total de água no planeta permanece constante.</label></div>
+                <div class="alternative"><input type="radio" name="q1" value="D" id="q1d"><label for="q1d"><strong>D)</strong> O ciclo hidrológico é acelerado pelo aquecimento, aumentando a evaporação, alterando padrões de precipitação e causando eventos extremos que afetam a biosfera.</label></div>
+                <div class="alternative"><input type="radio" name="q1" value="E" id="q1e"><label for="q1e"><strong>E)</strong> A Hidrosfera é completamente isolada da Atmosfera, portanto mudanças climáticas não influenciam o ciclo da água.</label></div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question">
+            <div class="question-header"><div class="question-number">2</div><div class="question-text"><strong>Concentração de CO₂ e Atmosfera</strong><br>O relatório de 2025 da OMM indica que a concentração de dióxido de carbono atingiu o maior crescimento anual desde 1957. Qual gráfico abaixo melhor representa a tendência de concentração de CO₂ atmosférico?</div></div>
+            <div class="question-image"><svg viewBox="0 0 600 350" width="500" height="291" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="300" x2="550" y2="300" stroke="#333" stroke-width="2"/><line x1="50" y1="300" x2="50" y2="30" stroke="#333" stroke-width="2"/><text x="15" y="305" font-size="11" text-anchor="end">0</text><text x="15" y="255" font-size="11" text-anchor="end">100</text><text x="15" y="205" font-size="11" text-anchor="end">200</text><text x="15" y="155" font-size="11" text-anchor="end">300</text><text x="15" y="105" font-size="11" text-anchor="end">400</text><text x="15" y="55" font-size="11" text-anchor="end">500</text><text x="50" y="325" font-size="11" text-anchor="middle">1980</text><text x="250" y="325" font-size="11" text-anchor="middle">2010</text><text x="450" y="325" font-size="11" text-anchor="middle">2025</text><text x="300" y="348" font-size="12" font-weight="bold" text-anchor="middle">Ano</text><polyline points="50,280 150,255 250,210 350,130 450,50 550,35" fill="none" stroke="#DC2626" stroke-width="3"/><circle cx="50" cy="280" r="3" fill="#DC2626"/><circle cx="150" cy="255" r="3" fill="#DC2626"/><circle cx="250" cy="210" r="3" fill="#DC2626"/><circle cx="350" cy="130" r="3" fill="#DC2626"/><circle cx="450" cy="50" r="3" fill="#DC2626"/><circle cx="550" cy="35" r="3" fill="#DC2626"/><rect x="400" y="50" width="140" height="60" fill="white" stroke="#999" stroke-width="1" rx="4"/><line x1="410" y1="68" x2="440" y2="68" stroke="#DC2626" stroke-width="2"/><text x="445" y="72" font-size="11">Concentração CO₂</text><text x="410" y="98" font-size="10" fill="#666">Tendência crescente</text></svg></div>
+            <div class="alternatives">
+                <div class="alternative"><input type="radio" name="q2" value="A" id="q2a"><label for="q2a"><strong>A)</strong> Linha horizontal, indicando que a concentração de CO₂ permanece estável ao longo dos anos.</label></div>
+                <div class="alternative"><input type="radio" name="q2" value="B" id="q2b"><label for="q2b"><strong>B)</strong> Curva exponencial crescente, mostrando aumento acelerado da concentração de CO₂, especialmente após 2000.</label></div>
+                <div class="alternative"><input type="radio" name="q2" value="C" id="q2c"><label for="q2c"><strong>C)</strong> Linha com oscilações regulares, indicando variações cíclicas naturais.</label></div>
+                <div class="alternative"><input type="radio" name="q2" value="D" id="q2d"><label for="q2d"><strong>D)</strong> Curva decrescente, mostrando redução gradual do CO₂ devido às ações humanas.</label></div>
+                <div class="alternative"><input type="radio" name="q2" value="E" id="q2e"><label for="q2e"><strong>E)</strong> Linha vertical, indicando aumento instantâneo de CO₂ em um único ano.</label></div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question"><div class="question-header"><div class="question-number">3</div><div class="question-text"><strong>Fatores Bióticos e Abióticos em Ecossistemas</strong><br>Observe a tabela abaixo. Qual alternativa identifica corretamente os fatores bióticos e abióticos?</div></div><div class="question-image"><div class="table-container"><table><thead><tr><th>Componente</th><th>Descrição</th><th>Tipo</th></tr></thead><tbody><tr><td>Luz Solar</td><td>Energia que impulsiona a fotossíntese</td><td>?</td></tr><tr><td>Plantas</td><td>Organismos produtores de energia</td><td>?</td></tr><tr><td>Temperatura</td><td>Influencia metabolismo dos seres vivos</td><td>?</td></tr><tr><td>Animais</td><td>Organismos consumidores</td><td>?</td></tr><tr><td>Solo</td><td>Substrato físico do ecossistema</td><td>?</td></tr><tr><td>Microrganismos</td><td>Decompositores de matéria orgânica</td><td>?</td></tr></tbody></table></div></div><div class="alternatives"><div class="alternative"><input type="radio" name="q3" value="A" id="q3a"><label for="q3a"><strong>A)</strong> Fatores bióticos: Luz Solar, Temperatura, Solo. Fatores abióticos: Plantas, Animais, Microrganismos.</label></div><div class="alternative"><input type="radio" name="q3" value="B" id="q3b"><label for="q3b"><strong>B)</strong> Fatores abióticos: Luz Solar, Temperatura, Solo. Fatores bióticos: Plantas, Animais, Microrganismos.</label></div><div class="alternative"><input type="radio" name="q3" value="C" id="q3c"><label for="q3c"><strong>C)</strong> Todos os componentes são fatores bióticos.</label></div><div class="alternative"><input type="radio" name="q3" value="D" id="q3d"><label for="q3d"><strong>D)</strong> Todos são fatores abióticos.</label></div><div class="alternative"><input type="radio" name="q3" value="E" id="q3e"><label for="q3e"><strong>E)</strong> Fatores bióticos: Luz Solar, Plantas. Fatores abióticos: Temperatura, Animais, Solo, Microrganismos.</label></div></div></div>
+
+        <!-- Q4 -->
+        <div class="question"><div class="question-header"><div class="question-number">4</div><div class="question-text"><strong>Camadas da Atmosfera e Proteção da Biosfera</strong><br>Qual camada é responsável pela absorção da radiação ultravioleta (UV) e proteção da biosfera?</div></div><div class="question-image"><svg viewBox="0 0 500 450" width="400" height="360"><circle cx="250" cy="420" r="60" fill="#228B22"/><circle cx="250" cy="420" r="55" fill="#90EE90"/><rect x="50" y="30" width="400" height="50" fill="none" stroke="#FFD700" stroke-width="2" stroke-dasharray="5,5"/><text x="460" y="60" font-size="12" font-weight="bold" fill="#FFD700">Exosfera</text><rect x="50" y="80" width="400" height="60" fill="none" stroke="#FF6B6B" stroke-width="2"/><text x="460" y="115" font-size="12" font-weight="bold" fill="#FF6B6B">Termosfera</text><rect x="50" y="140" width="400" height="60" fill="none" stroke="#9370DB" stroke-width="2"/><text x="460" y="175" font-size="12" font-weight="bold" fill="#9370DB">Mesosfera</text><rect x="50" y="200" width="400" height="80" fill="none" stroke="#FFD700" stroke-width="3"/><rect x="60" y="230" width="380" height="30" fill="#FFD700" opacity="0.2"/><text x="460" y="240" font-size="12" font-weight="bold" fill="#FFD700">Estratosfera</text><text x="70" y="250" font-size="11" font-weight="bold" fill="#333">Camada de Ozônio</text><rect x="50" y="280" width="400" height="100" fill="none" stroke="#4A90E2" stroke-width="3"/><text x="460" y="330" font-size="12" font-weight="bold" fill="#4A90E2">Troposfera</text></svg></div><div class="alternatives"><div class="alternative"><input type="radio" name="q4" value="A" id="q4a"><label for="q4a"><strong>A)</strong> Troposfera</label></div><div class="alternative"><input type="radio" name="q4" value="B" id="q4b"><label for="q4b"><strong>B)</strong> Estratosfera, que contém a camada de ozônio</label></div><div class="alternative"><input type="radio" name="q4" value="C" id="q4c"><label for="q4c"><strong>C)</strong> Mesosfera</label></div><div class="alternative"><input type="radio" name="q4" value="D" id="q4d"><label for="q4d"><strong>D)</strong> Termosfera</label></div><div class="alternative"><input type="radio" name="q4" value="E" id="q4e"><label for="q4e"><strong>E)</strong> Exosfera</label></div></div></div>
+
+        <!-- Q5 -->
+        <div class="question"><div class="question-header"><div class="question-number">5</div><div class="question-text"><strong>Biodiversidade e Fatores Bióticos</strong><br>Segundo dados de 2025, a aptidão climática para transmissão de dengue aumentou 108%. Este exemplo ilustra a relação entre:</div></div><div class="alternatives"><div class="alternative"><input type="radio" name="q5" value="A" id="q5a"><label for="q5a"><strong>A)</strong> Apenas fatores bióticos</label></div><div class="alternative"><input type="radio" name="q5" value="B" id="q5b"><label for="q5b"><strong>B)</strong> Apenas fatores abióticos</label></div><div class="alternative"><input type="radio" name="q5" value="C" id="q5c"><label for="q5c"><strong>C)</strong> Interação entre fatores abióticos e bióticos</label></div><div class="alternative"><input type="radio" name="q5" value="D" id="q5d"><label for="q5d"><strong>D)</strong> Nenhuma relação</label></div><div class="alternative"><input type="radio" name="q5" value="E" id="q5e"><label for="q5e"><strong>E)</strong> Apenas ação humana</label></div></div></div>
+
+        <!-- DISSERTATIVAS -->
+        <h2 class="section-title">Questões Dissertativas</h2>
+
+        <div class="question"><div class="question-header"><div class="question-number">6</div><div class="question-text"><strong>Biosfera e Conservação</strong><br>Explique como a Biosfera depende da interação entre Hidrosfera, Atmosfera e fatores bióticos/abióticos. Cite dois exemplos de como as mudanças climáticas afetam essa interação.</div></div><div class="essay-response"><span class="response-label">Sua resposta:</span><textarea class="essay-textarea" id="d1" name="d1" placeholder="Digite sua resposta aqui..."></textarea></div></div>
+
+        <div class="question"><div class="question-header"><div class="question-number">7</div><div class="question-text"><strong>Ciclo Hidrológico e Mudanças Climáticas</strong><br>Descreva como o aquecimento dos oceanos afeta a distribuição de água doce nos continentes e as consequências para os ecossistemas terrestres.</div></div><div class="essay-response"><span class="response-label">Sua resposta:</span><textarea class="essay-textarea" id="d2" name="d2" placeholder="Digite sua resposta aqui..."></textarea></div></div>
+
+        <div class="question"><div class="question-header"><div class="question-number">8</div><div class="question-text"><strong>Atmosfera e Efeito Estufa</strong><br>Explique o mecanismo do efeito estufa e como o aumento de gases como CO₂ interfere na radiação térmica. Qual a consequência para a Biosfera?</div></div><div class="essay-response"><span class="response-label">Sua resposta:</span><textarea class="essay-textarea" id="d3" name="d3" placeholder="Digite sua resposta aqui..."></textarea></div></div>
+
+        <div class="question"><div class="question-header"><div class="question-number">9</div><div class="question-text"><strong>Fatores Bióticos e Cadeias Alimentares</strong><br>Descreva uma cadeia alimentar completa em ecossistema aquático, identificando produtores, consumidores e decompositores. Como a poluição da Hidrosfera afeta essa cadeia?</div></div><div class="essay-response"><span class="response-label">Sua resposta:</span><textarea class="essay-textarea" id="d4" name="d4" placeholder="Digite sua resposta aqui..."></textarea></div></div>
+
+        <div class="question"><div class="question-header"><div class="question-number">10</div><div class="question-text"><strong>Integração de Conceitos</strong><br>Redija um texto explicativo (mínimo 10 linhas) sobre como o relatório da ONU 2025 demonstra a interconexão entre Biosfera, Hidrosfera, Atmosfera e fatores bióticos/abióticos. Cite dados específicos.</div></div><div class="essay-response"><span class="response-label">Sua resposta:</span><textarea class="essay-textarea" id="d5" name="d5" placeholder="Digite sua resposta aqui..." style="min-height:180px;"></textarea></div></div>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="buttons-container">
+        <button class="action-button" id="btnEnviar">📤 Enviar</button>
+        <button class="action-button" id="btnCorrigir">✅ Corrigir</button>
+    </div>
+
+    <div class="footer">
+        <p>Atividade de Ciências - 6º Ano | Padrão ENEM | E.E. Profª Lydia Kitz Moreira | 2025</p>
+    </div>
+</div>
+
+<!-- MODAL de feedback -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-icon" id="modalIcon">✅</div>
+        <div class="modal-title" id="modalTitle">Título</div>
+        <div class="modal-msg" id="modalMsg">Mensagem</div>
+        <button class="modal-btn" onclick="fecharModal()">OK</button>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  CONFIGURAÇÃO — ajuste APENAS a URL abaixo após publicar
+//  o Apps Script como Web App
+// ═══════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/SEU_DEPLOYMENT_ID_AQUI/exec";
+
+// Gabarito para correção visual no HTML
+const GABARITO = { q1:"D", q2:"B", q3:"B", q4:"B", q5:"C" };
+const TOTAL_QUESTOES = 5;
+
+// Mapeamento turma → nome da aba na planilha
+const SHEET_NAMES = {
+    "6A": "6oA respostas LKM",
+    "6B": "6oB respostas LKM",
+    "6C": "6oC respostas LKM"
+};
+
+// ─── Dados dos alunos ────────────────────────────────────────
+const studentData = {
+    "6A": ["ANA CHRYSTINA TIEKO DA PAIXAO","ANTONELLA ALVES XAVIER","ARTHUR DANIEL MASSAKI LIMA","BARBARA CRISTINA FERREIRA DA SILVA","BERNARDO GOMES ANDRADE DE OLIVEIRA","BYANCA DOS SANTOS PEREIRA","DANIEL DA SILVA MARQUES","DAVI LUCAS DA SILVA FEITOSA","DIOGO SOARES FIUZA","EDUARDA SOPHIA LOPES LIMA","EDUARDA STHEFANY MARQUES DA SILVA","ENZO GABRIEL SOUZA LOPES","ESTER VITORIA FELIX DA CRUZ","GUILHERME HENRIQUE ALMEIDA DO NASCIMENTO","HIAGO ALEXANDRE BARBOSA DE PAULA","JORGE GABRIEL SANTOS ASSIS","MARIA CLARA MOURA ROMUALDO","MATHEUS CARVALHO ROSA","MELISSA MIRELLY OLIVEIRA DOS REIS","MURILO SARAIVA TRINDADE","PABLO LUCAS DA SILVA","PEDRO HENRIQUE DO NASCIMENTO SANTOS","PEDRO LUCAS CRUZ PRIORI","PIETRO OLIVEIRA FREITAS","RAFAEL ALVES ROCHA","RIQUELME SOTERO RODRIGUES","SOPHIA GIOVANA OLIVEIRA ALVES","VINICIUS BESERRA ARAUJO","VINICIUS RIBEIRO AMARAL ABRAHAO"],
+    "6B": ["ALICE ALVES BRITO DA COSTA","ANA CLARA BATISTA BRITO","ANNA JULIA CARVALHO MARQUES","DAVI HENRIQUE SILVA DE MELO","DAVI LUIZ CARDOSO BARBOSA","ELOAH OLIVEIRA DE SOUZA","ESTHER ARAUJO DE OLIVEIRA","JAMILY FERNANDA GONZALES ADUVIRI","KENNEDY GABRIEL ALVES DA SILVA","LAURA VITORIA JESUS SOUZA","MARIA EDUARDA FERREIRA TORRES","MARIA EDUARDA RIBEIRO DE OLIVEIRA ROCHA","MARIA LUIZA ALVES DA SILVA","MATHEUS MEDEIROS DE FARIA MONZEN","MIGUEL CERCUNDO TEODORO","MIGUEL GOUVEA CARDOSO","MIGUEL OLIVEIRA ALVES","MIGUEL SILVA SOUZA","MILLENA ALEJANDRA CARDOSO BUSTILLOS","MILLENA OLIVEIRA DOS SANTOS","NICOLE FERREIRA SANTOS","NICOLLY EVARISTO DUTRA","PIETRO GABRIEL VIEIRA DA SILVA","RICHARD SAMUEL PEREIRA NASCIMENTO","SARA CAROLINE FONSECA PORFIRIO","SOPHIA RIBEIRO SANTOS","THAYLA EMANOELLY ANDRADE FIDELIS","VITORIA YASMIN FIRMINO DE OLIVEIRA","WILLIAM ALVES CORAZZA","MANUELA ELI DOS SANTOS SILVA"],
+    "6C": ["AMANDA MENDES DE SOUZA JOSÉ","ANA JULIA DE SOUZA LOPES","ARTHUR GOMES MINZÉ","BRAYAN DE OLIVEIRA LOPES","CARLOS HENRIQUE ROSA PAULINO","DAVI LUCAS DE SOUZA SILVA","DAVI LUCAS MATIAS RIBEIRO","DAVI SOUSA OLIVEIRA","FELIPE GABRIEL ALVES ARAUJO","GEOVANA SALDANHA DOS SANTOS","ISABELLY DE OLIVEIRA SANTOS","JOHN GRIGORIO SILVA","KAMILY GABRIELLY SOARES XAVIER","KAROLINA APARECIDA DE LIRA","LAVINIA LIUS DE ALMEIDA MORAES","LEANDRO OLIVEIRA LINO","LUAN HENRIQUE BERNEGOSSO DA CRUZ","MANUELLA DE MORAES SILVA","MARIA CLARA DE SOUZA LOPES","MATEUS HENRIQUE SOUSA SANTOS","MIQUEIAS DEL VALLE ISAIAS MAGALHAES","MIQUEIAS PAULINO SILVA","NATAN CASTRO DE CARVALHO","NICOLLE MARQUES DA SILVA","PIETTRO SORRILHA SOUZA","RAFAELA FARIA SILVA","SOFIA GOMES DANTAS","TAYANK ROBER LIMACHI CHOQUE","VICTOR JUNIOR TENORIO COSTA"]
+};
+
+// ─── Inicialização ───────────────────────────────────────────
+document.getElementById('dataField').valueAsDate = new Date();
+
+function atualizarTurma() {
+    const sc   = document.getElementById('turmaSelect').value;
+    const aS   = document.getElementById('alunoSelect');
+    const tF   = document.getElementById('turmaField');
+    const labels = { "6A":"6º Ano A", "6B":"6º Ano B", "6C":"6º Ano C" };
+    aS.innerHTML = '<option value="">-- Escolha seu nome --</option>';
+    document.getElementById('alunoField').value = '';
+    if (sc) {
+        tF.value = labels[sc] || sc;
+        (studentData[sc] || []).forEach(n => {
+            const o = document.createElement('option');
+            o.value = n; o.textContent = n; aS.appendChild(o);
+        });
+    } else { tF.value = ''; }
+}
+
+function atualizarAluno() {
+    document.getElementById('alunoField').value = document.getElementById('alunoSelect').value;
+}
+
+// ─── Modal helpers ───────────────────────────────────────────
+function abrirModal(icon, title, msg) {
+    document.getElementById('modalIcon').textContent  = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalMsg').textContent   = msg;
+    document.getElementById('modalOverlay').classList.add('active');
+}
+function fecharModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+}
+
+// ─── Coletar respostas ───────────────────────────────────────
+function coletarRespostas() {
+    const respostas = {};
+    for (let i = 1; i <= 5; i++) {
+        const sel = document.querySelector(`input[name="q${i}"]:checked`);
+        respostas[`q${i}`] = sel ? sel.value : "";
+    }
+    for (let j = 1; j <= 5; j++) {
+        respostas[`d${j}`] = (document.getElementById(`d${j}`) || {}).value || "";
+    }
+    return respostas;
+}
+
+// ─── Botão CORRIGIR ──────────────────────────────────────────
+document.getElementById('btnCorrigir').addEventListener('click', () => {
+    let acertos = 0;
+    for (let i = 1; i <= 5; i++) {
+        const alts = document.querySelectorAll(`input[name="q${i}"]`);
+        alts.forEach(radio => {
+            const div = radio.closest('.alternative');
+            div.classList.remove('correct-ans', 'wrong-ans');
+            const isGab = radio.value === GABARITO[`q${i}`];
+            const marcado = radio.checked;
+            if (isGab)     div.classList.add('correct-ans');
+            if (marcado && !isGab) div.classList.add('wrong-ans');
+            if (isGab && marcado) acertos++;
+        });
+    }
+    const nota = ((acertos / TOTAL_QUESTOES) * 10).toFixed(1);
+    abrirModal(
+        acertos === TOTAL_QUESTOES ? "🏆" : acertos >= 3 ? "👍" : "📚",
+        `Resultado: ${acertos}/${TOTAL_QUESTOES}`,
+        `Sua nota nas objetivas é ${nota}. As alternativas verdes são as corretas; as vermelhas indicam erro. As questões dissertativas serão corrigidas pelo professor.`
+    );
+});
+
+// ─── Botão ENVIAR ────────────────────────────────────────────
+document.getElementById('btnEnviar').addEventListener('click', () => {
+    // Validações
+    const turmaKey  = document.getElementById('turmaSelect').value;
+    const aluno     = document.getElementById('alunoSelect').value;
+    const dataVal   = document.getElementById('dataField').value;
+
+    if (!turmaKey) { abrirModal("⚠️","Atenção","Selecione sua turma antes de enviar."); return; }
+    if (!aluno)    { abrirModal("⚠️","Atenção","Selecione seu nome antes de enviar."); return; }
+
+    const respostas = coletarRespostas();
+
+    // Calcular acertos
+    let acertos = 0;
+    for (let i = 1; i <= 5; i++) {
+        if (respostas[`q${i}`] === GABARITO[`q${i}`]) acertos++;
+    }
+    const nota = parseFloat(((acertos / TOTAL_QUESTOES) * 10).toFixed(1));
+
+    // Montar payload — sheetName define em qual aba será gravado
+    const payload = {
+        sheetName:    SHEET_NAMES[turmaKey],      // ex: "6oA respostas LKM"
+        studentName:  aluno,
+        studentNumber: "",                         // número não coletado nesta versão
+        studentGrade: document.getElementById('turmaField').value,
+        date:         dataVal,
+        q1: respostas.q1, q2: respostas.q2, q3: respostas.q3,
+        q4: respostas.q4, q5: respostas.q5,
+        d1: respostas.d1, d2: respostas.d2, d3: respostas.d3,
+        d4: respostas.d4, d5: respostas.d5,
+        correct:     acertos,
+        percentage:  nota,
+        switchCount: 0
+    };
+
+    // Codificar em Base64 (padrão do Apps Script universal)
+    const jsonStr  = JSON.stringify(payload);
+    const b64      = btoa(unescape(encodeURIComponent(jsonStr)));
+    const cbName   = "cb_" + Date.now();
+    const url      = `${APPS_SCRIPT_URL}?callback=${cbName}&data=${encodeURIComponent(b64)}`;
+
+    // Desabilitar botão durante o envio
+    const btn = document.getElementById('btnEnviar');
+    btn.disabled = true;
+    btn.textContent = "⏳ Enviando...";
+
+    // Timeout de segurança (15 s)
+    const timeoutId = setTimeout(() => {
+        cleanup();
+        btn.disabled = false;
+        btn.textContent = "📤 Enviar";
+        abrirModal("⚠️","Tempo esgotado","O servidor demorou para responder. Verifique sua conexão e tente novamente.");
+    }, 15000);
+
+    // JSONP — cria tag <script> para contornar CORS
+    let script;
+    function cleanup() {
+        clearTimeout(timeoutId);
+        if (script && script.parentNode) script.parentNode.removeChild(script);
+        delete window[cbName];
+    }
+
+    window[cbName] = function(resp) {
+        cleanup();
+        btn.disabled = false;
+        btn.textContent = "📤 Enviar";
+        if (resp && resp.status === "ok") {
+            abrirModal(
+                "✅", "Enviado com sucesso!",
+                `Suas respostas foram registradas na aba "${payload.sheetName}". Acertos: ${acertos}/${TOTAL_QUESTOES} | Nota: ${nota}.`
+            );
+        } else {
+            abrirModal("❌","Erro ao enviar", "Houve um problema ao salvar: " + (resp ? resp.message : "resposta inválida"));
+        }
+    };
+
+    script = document.createElement('script');
+    script.src = url;
+    script.onerror = function() {
+        cleanup();
+        btn.disabled = false;
+        btn.textContent = "📤 Enviar";
+        abrirModal("❌","Erro de conexão","Não foi possível alcançar o servidor. Verifique a URL do Apps Script e se o Web App está publicado corretamente.");
+    };
+    document.head.appendChild(script);
+});
+</script>
+</body>
+</html>
